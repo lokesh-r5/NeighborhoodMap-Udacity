@@ -61,18 +61,21 @@ var Restaurant= function(data){
   this.img= "";
   this.img_size="75*75";
 
+
   var authParams = $.param({
         'client_id': 'YD4NA220SWHVVAZUF00FY1A3AVZV3JNOZOELD1BRWN450PCR',
         'client_secret': 'NTBP012KLEKM0R4UBIBFTS2V4QVQNUEJTX2DLKIPA0AFVOGQ',
-        'v': '20130815'
+        'v': '20170827'
   });
 
   this.fourSquareUrl+=authParams;
 
+  //Fetching data for restaurant image from FourSquare
   $.ajax({
     url: this.fourSquareUrl,
     dataType: 'json'
   }).done(function(result){
+    console.log(result);
     var responseData= result.response.venue;
     this.img= responseData.bestPhoto.prefix+this.img_size+responseData.bestPhoto.suffix;
     this.link=responseData.url;
@@ -80,11 +83,16 @@ var Restaurant= function(data){
     console.log("Restaurant API failed");
   });
 
+  console.log("before add marker");
+  //Calling the marker function to create marker
   this.addMarker= function(){
+    console.log("add marker");
     createMarker(this);
-  }
+  };
+  this.addMarker();
 };
 
+//knockout view model
 var MapViewModel= function(){
 
   //declare a knockout array to store restaurants list
@@ -108,11 +116,12 @@ function initMap() {
   });
 
   createMarker= function(place){
+    console.log("sds");
     place.marker= new google.maps.Marker({
       position: place.location,
       map: map
     });
-  }
+  };
 
   google.maps.event.addDomListener(window, 'resize', function(){
 
