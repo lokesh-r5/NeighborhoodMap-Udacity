@@ -57,11 +57,35 @@ var Restaurant= function(data){
   this.location= data.location;
   this.id= data.id;
   this.isActive= ko.observable(false);
-  this.fourSquareUrl= "https://api.foursquare.com/v2/venues/"+this.id+;
+  this.fourSquareUrl= "https://api.foursquare.com/v2/venues/"+this.id+"?";
+  this.img= "";
+  this.img_size="75*75";
+
+  var authParams = $.param({
+        'client_id': 'YD4NA220SWHVVAZUF00FY1A3AVZV3JNOZOELD1BRWN450PCR',
+        'client_secret': 'NTBP012KLEKM0R4UBIBFTS2V4QVQNUEJTX2DLKIPA0AFVOGQ',
+        'v': '20130815'
+  });
+
+  this.fourSquareUrl+=authParams;
+
   $.ajax({
-    url: fourSquareUrl,
-    datatype: 'jsonp'
-  })
+    url: this.fourSquareUrl,
+    dataType: 'json'
+  }).done(function(result){
+    var responseData= result.response.venue;
+    this.img= responseData.bestPhoto.prefix+this.img_size+responseData.bestPhoto.suffix;
+    this.link=responseData.url;
+  }).fail(function(){
+    console.log("Restaurant API failed");
+  });
+
+  this.addMarker=(function(){
+    this.marker= new google.maps.Marker({
+      position: this.location,
+      map: map
+    });
+  })();
 };
 
 var MapViewModel= function(){
@@ -69,6 +93,9 @@ var MapViewModel= function(){
   //declare a knockout array to store restaurants list
   restaurantsList= ko.observableArray(restaurants);
 
+  restaurants.forEach(function(each){
+    restaurantsList.push(new Restaurant(each));
+  });
 
 
 };
