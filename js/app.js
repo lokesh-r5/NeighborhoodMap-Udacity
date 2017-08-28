@@ -56,7 +56,7 @@ var Restaurant= function(data){
   this.title= data.title;
   this.location= data.location;
   this.id= data.id;
-  this.isActive= ko.observable(false);
+  this.clicked= ko.observable(false);
   this.fourSquareUrl= "https://api.foursquare.com/v2/venues/"+this.id+"?";
   this.img= "";
   this.img_size="75*75";
@@ -96,15 +96,22 @@ var Restaurant= function(data){
 var MapViewModel= function(){
 
   //declare a knockout array to store restaurants list
-  restaurantsList= ko.observableArray(restaurants);
+  restaurantsList= ko.observableArray();
 
   restaurants.forEach(function(each){
     restaurantsList.push(new Restaurant(each));
     console.log('created');
   });
 
-
 };
+var menu = document.querySelector('#menu');
+var main = document.querySelector('main');
+var drawer = document.querySelector('.nav');
+
+menu.addEventListener('click', function(e) {
+  drawer.classList.toggle('open');
+  e.stopPropagation();
+});
 
 //Initialize map with default center as San Jose downtown
 function initMap() {
@@ -112,7 +119,7 @@ function initMap() {
 
   map = new google.maps.Map(document.getElementById('map'), {
      center: defaultCenter,
-     zoom: 8
+     zoom: 16
   });
 
   createMarker= function(place){
@@ -129,7 +136,7 @@ function initMap() {
 		map.setCenter(defaultCenter);
 
 	});
-
+  ko.applyBindings(new MapViewModel());
 };
 
 // function addMarker() {
@@ -142,8 +149,3 @@ function initMap() {
 // }
 //
 // addMarker();
-
-
-
-
-ko.applyBindings(new MapViewModel());
