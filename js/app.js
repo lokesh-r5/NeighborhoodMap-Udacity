@@ -80,12 +80,9 @@ var Restaurant= function(data){
     console.log("Restaurant API failed");
   });
 
-  this.addMarker=(function(){
-    this.marker= new google.maps.Marker({
-      position: this.location,
-      map: map
-    });
-  })();
+  this.addMarker= function(){
+    createMarker(this);
+  }
 };
 
 var MapViewModel= function(){
@@ -95,6 +92,7 @@ var MapViewModel= function(){
 
   restaurants.forEach(function(each){
     restaurantsList.push(new Restaurant(each));
+    console.log('created');
   });
 
 
@@ -108,6 +106,13 @@ function initMap() {
      center: defaultCenter,
      zoom: 8
   });
+
+  createMarker= function(place){
+    place.marker= new google.maps.Marker({
+      position: place.location,
+      map: map
+    });
+  }
 
   google.maps.event.addDomListener(window, 'resize', function(){
 
