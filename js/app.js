@@ -146,11 +146,11 @@ var MapViewModel= function(){
     drawer.classList.toggle('open');
     e.stopPropagation();
   });
-
-  this.searchRestaurant = ko.observable('');
+  this.searchRestaurant= ko.observable('');
   this.displayRestaurants= ko.computed(function(){
     return restaurants.filter(function(restaurant){
-      this.searchRestaurant= this.searchRestaurant.toLowerCase();
+      //this.searchRestaurant= this.searchRestaurant.toLowerCase();
+      console.log(this.searchRestaurant+" dgdgd");
 
       var targetIndex= restaurant.title.toLowerCase().indexOf(this.searchRestaurant);
 
