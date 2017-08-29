@@ -15,14 +15,12 @@
             <path d="M2 6h20v3H2zm0 5h20v3H2zm0 5h20v3H2z"/>
           </svg>
         </a>
-      </div>
-      <div>
         <h1 id="head">Restaurants in San Jose Downtown</h1>
       </div>
     </header>
     <nav id="drawer" class="nav">
       <ul class="nav_list" data-bind="foreach: restaurantsList">
-        <li class="nav_item" data-bind="text: $data.title"><a href="#">News</a></li>
+        <li class="nav_item"  data-bind="text: $data.title, click: $data.openInfoWindow"></li>
       </ul>
     </nav>
     <div id="map"></div>

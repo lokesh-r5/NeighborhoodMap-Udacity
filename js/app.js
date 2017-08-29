@@ -1,6 +1,6 @@
 //intialized hangout locations around San Jose Downtown
 
-var map, restaurantsList, infoWindow, createMarker;
+var map, restaurantsList, infoWindow, createMarker, defaultCenter;
 var restaurants = [
   {
     title: 'Philz Coffee',
@@ -59,7 +59,7 @@ var Restaurant= function(data){
   this.clicked= ko.observable(false);
   this.fourSquareUrl= "https://api.foursquare.com/v2/venues/"+this.id+"?";
   this.img= "";
-  this.img_size="75*75";
+  this.img_size="75x75";
 
 
   var authParams = $.param({
@@ -83,13 +83,35 @@ var Restaurant= function(data){
     console.log("Restaurant API failed");
   });
 
-  console.log("before add marker");
   //Calling the marker function to create marker
   this.addMarker= function(){
-    console.log("add marker");
-    createMarker(this);
+    this.marker= new google.maps.Marker({
+      position: this.location,
+      map: map
+    });
   };
   this.addMarker();
+
+  this.displayHeader= '<h3>'+this.title+'</h3>';
+  this.displayImage= '<img alt="'+this.title+'" src="'+this.img+'">'
+
+  //create infoWindow for the marker
+  this.infoWindow= new google.maps.InfoWindow({
+      content: '',
+      position: this.location,
+      pixelOffset: {width: -2, height: -35}
+  });
+
+  this.infoWindow.close();
+  this.openInfoWindow= function(){
+    this.infoWindow.setContent( this.displayHeader+this.displayImage);
+    this.infoWindow.open(map);
+  };
+
+  this.marker.addListener('click', function() {
+    this.infoWindow.open(map);
+  });
+
 };
 
 //knockout view model
@@ -103,32 +125,25 @@ var MapViewModel= function(){
     console.log('created');
   });
 
-};
-var menu = document.querySelector('#menu');
-var main = document.querySelector('main');
-var drawer = document.querySelector('.nav');
+  var menu = document.querySelector('#menu');
+  var main = document.querySelector('main');
+  var drawer = document.querySelector('.nav');
 
-menu.addEventListener('click', function(e) {
-  drawer.classList.toggle('open');
-  e.stopPropagation();
-});
+  menu.addEventListener('click', function(e) {
+    drawer.classList.toggle('open');
+    e.stopPropagation();
+  });
+
+};
 
 //Initialize map with default center as San Jose downtown
 function initMap() {
-  var defaultCenter= {lat: 37.335719, lng: -121.886708};
+  defaultCenter= {lat: 37.335719, lng: -121.886708};
 
   map = new google.maps.Map(document.getElementById('map'), {
      center: defaultCenter,
      zoom: 16
   });
-
-  createMarker= function(place){
-    console.log("sds");
-    place.marker= new google.maps.Marker({
-      position: place.location,
-      map: map
-    });
-  };
 
   google.maps.event.addDomListener(window, 'resize', function(){
 

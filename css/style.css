@@ -60,7 +60,7 @@ ul {
   margin: 0;
 }
 
-@media screen and (max-width: 570px){
+@media screen and (max-width: 550px){
   h1{
     margin-left: 40px;
   }
