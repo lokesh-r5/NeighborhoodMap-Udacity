@@ -1,8 +1,10 @@
 //intialized hangout locations around San Jose Downtown
 
-var map, restaurantsList, infoWindow, createMarker, defaultCenter;
+var map, restaurantsList, createMarker, defaultCenter;
+var infoWindow=[];
 var restaurants = [
   {
+    index: 0,
     title: 'Philz Coffee',
     location: {
       lat: 37.333607,
@@ -11,6 +13,7 @@ var restaurants = [
     id: '4a55473ef964a520fcb31fe3'
   },
   {
+    index: 1,
     title: 'La Victoria',
     location: {
       lat: 37.33542,
@@ -19,6 +22,7 @@ var restaurants = [
     id: '49c2d651f964a5202e561fe3'
   },
   {
+    index: 2,
     title: 'Amor Cafe and Tea',
     location: {
       lat: 37.335351,
@@ -27,6 +31,7 @@ var restaurants = [
     id: '50f71858e4b0a61af5c67758'
   },
   {
+    index: 3,
     title: 'Whispers Cafe and Creperie',
     location: {
       lat: 37.33384,
@@ -35,6 +40,7 @@ var restaurants = [
     id: '4af1137ef964a520ace021e3'
   },
   {
+    index: 4,
     title: 'Paper Plane',
     location: {
       lat: 37.335056,
@@ -43,6 +49,7 @@ var restaurants = [
     id: '53336ce5498e6ec45340b722'
   },
   {
+    index: 4,
     title: 'La Lune Pastry Shop',
     location: {
       lat: 37.333729,
@@ -53,6 +60,7 @@ var restaurants = [
 ];
 
 var Restaurant= function(data){
+  this.index= data.index;
   this.title= data.title;
   this.location= data.location;
   this.id= data.id;
@@ -96,33 +104,38 @@ var Restaurant= function(data){
   this.displayImage= '<img alt="'+this.title+'" src="'+this.img+'">'
 
   //create infoWindow for the marker
-  this.infoWindow= new google.maps.InfoWindow({
-      content: '',
+  infoWindow[this.index]= new google.maps.InfoWindow({
+      content: this.displayHeader+this.displayImage,
       position: this.location,
       pixelOffset: {width: -2, height: -35}
   });
 
-  this.infoWindow.close();
   this.openInfoWindow= function(){
-    this.infoWindow.setContent( this.displayHeader+this.displayImage);
-    this.infoWindow.open(map);
+    infoWindow.forEach(function(window){
+      window.close();
+    });
+    map.setCenter(this.location);
+    infoWindow[this.index].open(map);
   };
 
   this.marker.addListener('click', function() {
-    this.infoWindow.open(map);
+    infoWindow.forEach(function(window){
+      window.close();
+    });
+    map.setCenter(data.location);
+    infoWindow[data.index].open(map);
   });
 
 };
 
 //knockout view model
 var MapViewModel= function(){
-
+  var self= this;
   //declare a knockout array to store restaurants list
   restaurantsList= ko.observableArray();
 
   restaurants.forEach(function(each){
     restaurantsList.push(new Restaurant(each));
-    console.log('created');
   });
 
   var menu = document.querySelector('#menu');
@@ -134,6 +147,18 @@ var MapViewModel= function(){
     e.stopPropagation();
   });
 
+  this.searchRestaurant = ko.observable('');
+  this.displayRestaurants= ko.computed(function(){
+    return restaurants.filter(function(restaurant){
+      this.searchRestaurant= this.searchRestaurant.toLowerCase();
+
+      var targetIndex= restaurant.title.toLowerCase().indexOf(this.searchRestaurant);
+
+      if(targetIndex!==-1){
+        return new Restaurant(restaurant);
+      }
+    });
+  });
 };
 
 //Initialize map with default center as San Jose downtown

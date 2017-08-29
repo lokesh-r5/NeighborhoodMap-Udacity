@@ -19,6 +19,9 @@
       </div>
     </header>
     <nav id="drawer" class="nav">
+      <form>
+        <input data-bind="value:searchRestaurant, valueUpdate: 'afterkeydown'" placeholder="Restaurant Search">
+      </form>
       <ul class="nav_list" data-bind="foreach: restaurantsList">
         <li class="nav_item"  data-bind="text: $data.title, click: $data.openInfoWindow"></li>
       </ul>
