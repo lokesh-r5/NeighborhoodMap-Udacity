@@ -146,16 +146,13 @@ var MapViewModel= function(){
     drawer.classList.toggle('open');
     e.stopPropagation();
   });
-  this.searchRestaurant= ko.observable('');
-  this.displayRestaurants= ko.computed(function(){
-    return restaurants.filter(function(restaurant){
-      //this.searchRestaurant= this.searchRestaurant.toLowerCase();
-      console.log(this.searchRestaurant+" dgdgd");
-
-      var targetIndex= restaurant.title.toLowerCase().indexOf(this.searchRestaurant);
-
+  self.searchRestaurant= ko.observable('f');
+  self.displayRestaurants= ko.computed(function(){
+    restaurantsList.filter(function(restaurant){
+      this.searchRestaurant= self.searchRestaurant().toLowerCase();
+      this.targetIndex= restaurant.title.toLowerCase().indexOf(this.searchRestaurant);
       if(targetIndex!==-1){
-        return new Restaurant(restaurant);
+        return restaurant;
       }
     });
   });
