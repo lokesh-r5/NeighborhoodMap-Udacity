@@ -132,11 +132,16 @@ var Restaurant= function(data){
 var MapViewModel= function(){
   var self= this;
   //declare a knockout array to store restaurants list
-  restaurantsList= ko.observableArray();
+  this.restaurantsList= ko.observableArray([]);
 
   restaurants.forEach(function(each){
-    restaurantsList.push(new Restaurant(each));
+    self.restaurantsList.push(new Restaurant(each));
   });
+  // restaurantsList= ko.observableArray();
+  //
+  // restaurants.forEach(function(each){
+  //   restaurantsList.push(new Restaurant(each));
+  // });
 
   var menu = document.querySelector('#menu');
   var main = document.querySelector('main');
@@ -147,15 +152,36 @@ var MapViewModel= function(){
     e.stopPropagation();
   });
   self.searchRestaurant= ko.observable('f');
-  self.displayRestaurants= ko.computed(function(){
-    restaurantsList.filter(function(restaurant){
-      this.searchRestaurant= self.searchRestaurant().toLowerCase();
-      this.targetIndex= restaurant.title.toLowerCase().indexOf(this.searchRestaurant);
-      if(targetIndex!==-1){
-        return restaurant;
-      }
-    });
-  });
+  // self.displayRestaurants= ko.computed(function(){
+  //   restaurantsList.filter(function(restaurant){
+  //     this.searchRestaurant= self.searchRestaurant().toLowerCase();
+  //     this.targetIndex= restaurant.title.toLowerCase().indexOf(this.searchRestaurant);
+  //     if(targetIndex!==-1){
+  //       return restaurant;
+  //     }
+  //   });
+  // });
+
+  this.displayRestaurants = ko.computed( function() {
+    var filter = self.searchRestaurant().toLowerCase();
+    console.log(filter+"   "+self.searchRestaurant())
+    if (filter!=='') {
+      console.log("sd");
+      self.restaurantsList().forEach(function(searchItem){
+        var string = searchItem.title.toLowerCase();
+        var visible = (string.search(filter) >= 0);
+        console.log(visible);
+        return visible;//do something. Usually set the visibility of each item
+      });
+      return self.restaurantsList();
+    }
+    else {
+      console.log("sjhkujd");
+      return ko.utils.arrayFilter(self.restaurantsList(), function(searchItem) {
+        return true;
+      });
+    }
+  }, self);
 };
 
 //Initialize map with default center as San Jose downtown
