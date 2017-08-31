@@ -151,7 +151,7 @@ var MapViewModel= function(){
     drawer.classList.toggle('open');
     e.stopPropagation();
   });
-  self.searchRestaurant= ko.observable('f');
+  self.searchRestaurant= ko.observable('');
   // self.displayRestaurants= ko.computed(function(){
   //   restaurantsList.filter(function(restaurant){
   //     this.searchRestaurant= self.searchRestaurant().toLowerCase();
