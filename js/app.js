@@ -69,7 +69,6 @@ var Restaurant= function(data){
   this.img= "";
   this.img_size="75x75";
 
-
   var authParams = $.param({
         'client_id': 'YD4NA220SWHVVAZUF00FY1A3AVZV3JNOZOELD1BRWN450PCR',
         'client_secret': 'NTBP012KLEKM0R4UBIBFTS2V4QVQNUEJTX2DLKIPA0AFVOGQ',
