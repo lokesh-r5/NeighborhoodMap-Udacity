@@ -165,7 +165,6 @@ var MapViewModel= function(){
     var filter = self.searchRestaurant().toLowerCase();
     console.log(filter+"   "+self.searchRestaurant())
     if (filter!=='') {
-      console.log("sd");
       self.restaurantsList().forEach(function(searchItem){
         var string = searchItem.title.toLowerCase();
         var visible = (string.search(filter) >= 0);
