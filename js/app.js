@@ -49,7 +49,7 @@ var restaurants = [
     id: '53336ce5498e6ec45340b722'
   },
   {
-    index: 4,
+    index: 5,
     title: 'La Lune Pastry Shop',
     location: {
       lat: 37.333729,
@@ -112,7 +112,6 @@ var Restaurant= function(data){
   self.addMarker();
 
   //create infoWindow for the marker
-  console.log(self.displayHeader);
   self.openInfoWindow= function(){
     infoWindow.forEach(function(window){
       window.close();
@@ -168,6 +167,11 @@ var MapViewModel= function(){
       }
     });
   });
+};
+
+var mapError= function(){
+  console.log("Error in loading Google Maps API");
+  alert("Error in loading Google Maps API");
 };
 
 //Initialize map with default center as San Jose downtown

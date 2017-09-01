@@ -27,11 +27,11 @@
         <li class="nav_item"  data-bind="text: $data.title, click: $data.openInfoWindow"></li>
       </ul>
     </nav>
-    <div id="map"></div>
+    <main id="map"></main>
     <script type="text/javascript" src="jslibraries/jquery-3.2.1.js"></script>
     <script type="text/javascript" src="jslibraries/knockout-3.4.2.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAfEJWSryzCgRSD61TnDE8NU1LAxRvkJ0c&callback=initMap"
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAfEJWSryzCgRSD61TnDE8NU1LAxRvkJ0c&callback=initMap" onerror="mapError()"
     async defer></script>
   </body>
 </html>
