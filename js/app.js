@@ -68,6 +68,7 @@ var Restaurant= function(data){
   this.fourSquareUrl= "https://api.foursquare.com/v2/venues/"+this.id+"?";
   this.img= "";
   this.img_size="75x75";
+  this.isActive= true;
 
   var authParams = $.param({
         'client_id': 'YD4NA220SWHVVAZUF00FY1A3AVZV3JNOZOELD1BRWN450PCR',
@@ -92,10 +93,12 @@ var Restaurant= function(data){
 
   //Calling the marker function to create marker
   this.addMarker= function(){
-    this.marker= new google.maps.Marker({
-      position: this.location,
-      map: map
-    });
+    if(this.isActive===true){
+      this.marker= new google.maps.Marker({
+        position: this.location,
+        map: map
+      });
+    }
   };
   this.addMarker();
 
@@ -156,7 +159,12 @@ var MapViewModel= function(){
       this.filter= self.searchRestaurant().toLowerCase();
       this.targetIndex= restaurant.title.toLowerCase().indexOf(filter);
       if(targetIndex!==-1){
+        restaurant.marker.setMap(map);
         return restaurant;
+      }
+      else{
+        restaurant.marker.setMap(null);
+        //restaurant.isActive= false;
       }
     });
   });
