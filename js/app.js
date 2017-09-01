@@ -113,6 +113,7 @@ var Restaurant= function(data){
 
   //create infoWindow for the marker
   self.openInfoWindow= function(){
+    self.marker.setAnimation(google.maps.Animation.DROP);
     infoWindow.forEach(function(window){
       window.close();
     });
