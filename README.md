@@ -14,3 +14,5 @@ Instructions:
 2. Click on markers to see the information of the favorite restaurant.
 3. Search for restaurant using search bar. Restaurant markers filter based on the search string.
 4. To check the responsiveness, change the width of the screen.
+
+site is published at https://lokesh-reddyvari.github.io/DowntownRestaurants-Udacity/
