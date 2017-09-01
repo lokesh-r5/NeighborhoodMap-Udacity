@@ -151,39 +151,38 @@ var MapViewModel= function(){
     e.stopPropagation();
   });
   self.searchRestaurant= ko.observable('');
-  // self.displayRestaurants= ko.computed(function(){
-  //   restaurantsList.filter(function(restaurant){
-  //     this.searchRestaurant= self.searchRestaurant().toLowerCase();
-  //     this.targetIndex= restaurant.title.toLowerCase().indexOf(this.searchRestaurant);
-  //     if(targetIndex!==-1){
-  //       return restaurant;
-  //     }
-  //   });
-  // });
+  self.displayRestaurants= ko.computed(function(){
+    return ko.utils.arrayFilter(self.restaurantsList(), function(restaurant) {
+      this.filter= self.searchRestaurant().toLowerCase();
+      this.targetIndex= restaurant.title.toLowerCase().indexOf(filter);
+      if(targetIndex!==-1){
+        return restaurant;
+      }
+    });
+  });
 
-  this.displayRestaurants = ko.computed( function() {
-    var filter = self.searchRestaurant().toLowerCase();
-    console.log(filter+"   "+self.searchRestaurant())
-    if (filter!=='') {
-      self.restaurantsList().forEach(function(searchItem){
-        var string = searchItem.title.toLowerCase();
-        var visible = (string.search(filter) >= 0);
-        console.log(visible);
-        return visible;//do something. Usually set the visibility of each item
-      });
-      return self.restaurantsList();
-    }
-    else {
-      console.log("sjhkujd");
-      return ko.utils.arrayFilter(self.restaurantsList(), function(searchItem) {
-        return true;
-      });
-    }
-  }, self);
+//   this.displayRestaurants = ko.computed( function() {
+//     var filter = self.searchRestaurant().toLowerCase();
+//     console.log(filter+"   "+self.searchRestaurant())
+//     if (filter!=='') {
+//       self.restaurantsList().forEach(function(searchItem){
+//         var string = searchItem.title.toLowerCase();
+//         var visible = (string.search(filter) >= 0);
+//         console.log(visible);
+//         return visible;//do something. Usually set the visibility of each item
+//       });
+//       return self.restaurantsList();
+//     }
+//     else {
+//       return ko.utils.arrayFilter(self.restaurantsList(), function(searchItem) {
+//         return true;
+//       });
+//     }
+//   }, self);
 };
 
 //Initialize map with default center as San Jose downtown
-function initMap() {
+var initMap= function() {
   defaultCenter= {lat: 37.335719, lng: -121.886708};
 
   map = new google.maps.Map(document.getElementById('map'), {
@@ -199,14 +198,3 @@ function initMap() {
 	});
   ko.applyBindings(new MapViewModel());
 };
-
-// function addMarker() {
-//
-//       var marker = new google.maps.Marker({
-//       position: {lat: 37.335719, lng: -121.886708},
-//       map: map,
-//       title: 'Uluru (Ayers Rock)'
-//   });
-// }
-//
-// addMarker();
