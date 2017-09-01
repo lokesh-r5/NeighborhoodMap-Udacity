@@ -60,6 +60,7 @@ var restaurants = [
 ];
 
 var Restaurant= function(data){
+  var self= this;
   this.index= data.index;
   this.title= data.title;
   this.location= data.location;
@@ -121,6 +122,7 @@ var Restaurant= function(data){
   };
 
   this.marker.addListener('click', function() {
+    self.marker.setAnimation(google.maps.Animation.DROP);
     infoWindow.forEach(function(window){
       window.close();
     });
