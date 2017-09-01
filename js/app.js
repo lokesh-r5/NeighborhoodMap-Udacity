@@ -98,6 +98,7 @@ var Restaurant= function(data){
       });
     }).fail(function(){
       console.log("Restaurant API failed");
+      alert("Restaurant API failed");
     });
 
   //Calling the marker function to create marker
