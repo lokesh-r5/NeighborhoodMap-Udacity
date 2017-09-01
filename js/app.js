@@ -61,15 +61,17 @@ var restaurants = [
 
 var Restaurant= function(data){
   var self= this;
-  this.index= data.index;
-  this.title= data.title;
-  this.location= data.location;
-  this.id= data.id;
-  this.clicked= ko.observable(false);
-  this.fourSquareUrl= "https://api.foursquare.com/v2/venues/"+this.id+"?";
-  this.img= "";
-  this.img_size="75x75";
-  this.isActive= true;
+  self.index= data.index;
+  self.title= data.title;
+  self.location= data.location;
+  self.id= data.id;
+  self.clicked= ko.observable(false);
+  self.fourSquareUrl= "https://api.foursquare.com/v2/venues/"+this.id+"?";
+  self.img= "";
+  self.img_size="150x100";
+  self.isActive= true;
+  self.displayHeader='';
+  self.displayImage='';
 
   var authParams = $.param({
         'client_id': 'YD4NA220SWHVVAZUF00FY1A3AVZV3JNOZOELD1BRWN450PCR',
@@ -77,57 +79,55 @@ var Restaurant= function(data){
         'v': '20170827'
   });
 
-  this.fourSquareUrl+=authParams;
+  self.fourSquareUrl+=authParams;
 
   //Fetching data for restaurant image from FourSquare
   $.ajax({
-    url: this.fourSquareUrl,
-    dataType: 'json'
-  }).done(function(result){
-    console.log(result);
-    var responseData= result.response.venue;
-    this.img= responseData.bestPhoto.prefix+this.img_size+responseData.bestPhoto.suffix;
-    this.link=responseData.url;
-  }).fail(function(){
-    console.log("Restaurant API failed");
-  });
+      url: self.fourSquareUrl,
+      dataType: 'json'
+    }).done(function(result){
+      var responseData= result.response.venue;
+      self.img= responseData.bestPhoto.prefix+self.img_size+responseData.bestPhoto.suffix;
+      self.link=responseData.url;
+      self.displayHeader= '<h3>'+self.title+'</h3>';
+      self.displayImage= '<img alt="'+self.title+'" src="'+self.img+'">';
+      infoWindow[self.index]= new google.maps.InfoWindow({
+          content: self.displayHeader+self.displayImage,
+          position: self.location,
+          pixelOffset: {width: -2, height: -35}
+      });
+    }).fail(function(){
+      console.log("Restaurant API failed");
+    });
 
   //Calling the marker function to create marker
-  this.addMarker= function(){
-    if(this.isActive===true){
-      this.marker= new google.maps.Marker({
+  self.addMarker= function(){
+    if(self.isActive===true){
+      self.marker= new google.maps.Marker({
         position: this.location,
         map: map
       });
     }
   };
-  this.addMarker();
-
-  this.displayHeader= '<h3>'+this.title+'</h3>';
-  this.displayImage= '<img alt="'+this.title+'" src="'+this.img+'">'
+  self.addMarker();
 
   //create infoWindow for the marker
-  infoWindow[this.index]= new google.maps.InfoWindow({
-      content: this.displayHeader+this.displayImage,
-      position: this.location,
-      pixelOffset: {width: -2, height: -35}
-  });
-
-  this.openInfoWindow= function(){
+  console.log(self.displayHeader);
+  self.openInfoWindow= function(){
     infoWindow.forEach(function(window){
       window.close();
     });
-    map.setCenter(this.location);
-    infoWindow[this.index].open(map);
+    map.setCenter(self.location);
+    infoWindow[self.index].open(map);
   };
 
-  this.marker.addListener('click', function() {
+  self.marker.addListener('click', function() {
     self.marker.setAnimation(google.maps.Animation.DROP);
     infoWindow.forEach(function(window){
       window.close();
     });
-    map.setCenter(data.location);
-    infoWindow[data.index].open(map);
+    map.setCenter(self.location);
+    infoWindow[self.index].open(map);
   });
 
 };
@@ -135,17 +135,12 @@ var Restaurant= function(data){
 //knockout view model
 var MapViewModel= function(){
   var self= this;
-  //declare a knockout array to store restaurants list
+  //declared a knockout array to store restaurants list
   this.restaurantsList= ko.observableArray([]);
 
   restaurants.forEach(function(each){
     self.restaurantsList.push(new Restaurant(each));
   });
-  // restaurantsList= ko.observableArray();
-  //
-  // restaurants.forEach(function(each){
-  //   restaurantsList.push(new Restaurant(each));
-  // });
 
   var menu = document.querySelector('#menu');
   var main = document.querySelector('main');
@@ -173,25 +168,6 @@ var MapViewModel= function(){
       }
     });
   });
-
-//   this.displayRestaurants = ko.computed( function() {
-//     var filter = self.searchRestaurant().toLowerCase();
-//     console.log(filter+"   "+self.searchRestaurant())
-//     if (filter!=='') {
-//       self.restaurantsList().forEach(function(searchItem){
-//         var string = searchItem.title.toLowerCase();
-//         var visible = (string.search(filter) >= 0);
-//         console.log(visible);
-//         return visible;//do something. Usually set the visibility of each item
-//       });
-//       return self.restaurantsList();
-//     }
-//     else {
-//       return ko.utils.arrayFilter(self.restaurantsList(), function(searchItem) {
-//         return true;
-//       });
-//     }
-//   }, self);
 };
 
 //Initialize map with default center as San Jose downtown
