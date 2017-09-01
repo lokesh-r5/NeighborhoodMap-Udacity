@@ -157,6 +157,9 @@ var MapViewModel= function(){
   });
   self.searchRestaurant= ko.observable('');
   self.displayRestaurants= ko.computed(function(){
+    infoWindow.forEach(function(window){
+      window.close();
+    });
     return ko.utils.arrayFilter(self.restaurantsList(), function(restaurant) {
       this.filter= self.searchRestaurant().toLowerCase();
       this.targetIndex= restaurant.title.toLowerCase().indexOf(filter);

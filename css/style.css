@@ -27,13 +27,29 @@ h1{
   display: none;
 }
 
+#searchbar{
+  font-family: Roboto, sans-serif;
+  font-size: 17px;
+  width: 280px;
+  height: 50px;
+  display: block;
+  padding: 5px;
+  border: 5px groove #E6E6FA;
+  border-radius: 10px;
+  color: #333;
+  transition: all 0.3s ease-out;
+}
 .nav{
+  color: white;
+  font-size: 17px;
+  font-family: Roboto, sans-serif;
   z-index: 10;
-  background-color: #fff;
+  background: #2b303b;
   width: 300px;
   position: absolute;
   -webkit-transform: translate(0px, 0);
   transform: translate(0px, 0);
+  border-radius: 10px;
 }
 .nav_item{
   box.sizing: border-box;
@@ -73,7 +89,7 @@ ul {
 
   .nav{
     z-index: 10;
-    background-color: #fff;
+    background: #2b303b;
     width: 300px;
     position: absolute;
     -webkit-transform: translate(-300px, 0);

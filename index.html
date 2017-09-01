@@ -5,7 +5,8 @@
     <meta name="viewport" content="width= device-width, initial-scale=1.0">
     <meta charset="utf-8">
     <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Roboto" rel="stylesheet">
   </head>
   <body>
     <header>
@@ -20,7 +21,7 @@
     </header>
     <nav id="drawer" class="nav">
       <form>
-        <input data-bind="value:searchRestaurant, valueUpdate: 'afterkeydown'" placeholder="Restaurant Search">
+        <input id= "searchbar" data-bind="value:searchRestaurant, valueUpdate: 'afterkeydown'" placeholder="Restaurant Search">
       </form>
       <ul class="nav_list" data-bind="foreach: displayRestaurants">
         <li class="nav_item"  data-bind="text: $data.title, click: $data.openInfoWindow"></li>
