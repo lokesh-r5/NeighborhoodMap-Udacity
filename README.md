@@ -2,7 +2,7 @@
 
 Project description:
 
-Developed a single page application featuring a map of favorite restaurants present in San Jose Downtown. Markers highlight the favorite restaurants. Foursquare APIs are used to show the
+Developed a single page application featuring a map of favorite restaurants present in San Jose Downtown. Markers highlight the favorite restaurants. Foursquare APIs are used to show the restaurants information and images.
 
 APIs used:
 Google Maps APIs
